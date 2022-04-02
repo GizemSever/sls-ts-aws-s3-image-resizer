@@ -1,2 +1,7 @@
 node_modules
 .idea
+.env
+.env.development
+.env.production
+.serverless
+.webpack

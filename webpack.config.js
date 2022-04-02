@@ -2,6 +2,7 @@ const path = require('path');
 const slsw = require('serverless-webpack');
 const nodeExternals = require('webpack-node-externals');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const DotEnv = require('dotenv-webpack');
 
 /*
 This line is only required if you are specifying `TS_NODE_PROJECT` for whatever reason.
@@ -21,6 +22,10 @@ module.exports = {
       new TsconfigPathsPlugin({
         configFile: './tsconfig.paths.json',
       }),
+      new DotEnv({
+        AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
+        AWS_REGION: process.env.AWS_REGION
+      })
     ],
   },
   output: {
