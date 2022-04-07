@@ -21,10 +21,6 @@ module.exports = {
     plugins: [
       new TsconfigPathsPlugin({
         configFile: './tsconfig.paths.json',
-      }),
-      new DotEnv({
-        AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
-        AWS_REGION: process.env.AWS_REGION
       })
     ],
   },
@@ -58,5 +54,10 @@ module.exports = {
       },
     ],
   },
-  plugins: [],
+  plugins: [
+    new DotEnv({
+      AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
+      AWS_REGION: process.env.AWS_REGION
+    })
+  ],
 };

@@ -12,7 +12,8 @@ export default {
             s3: {
                 bucket: process.env.AWS_S3_BUCKET,
                 event: 's3:ObjectCreated:*',
-                existing: true
+                existing: true,
+                rules: []
             }
         }
     ],

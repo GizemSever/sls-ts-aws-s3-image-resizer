@@ -13,6 +13,7 @@ const serverlessConfiguration: AWS = {
             includeModules: true,
         },
     },
+    useDotenv: true,
     plugins: [
         'serverless-webpack',
         'dotenv-webpack'
@@ -28,7 +29,7 @@ const serverlessConfiguration: AWS = {
         iamRoleStatements: [
             {
                 Effect: 'Allow',
-                Action: ['s3:ListBucket', 's3:PutObject', 's3:GetObject'],
+                Action: ['s3:ListBucket', 's3:PutObject', 's3:GetObject', 's3:PutObjectAcl'],
                 Resource: `arn:aws:s3:::${process.env.AWS_S3_BUCKET}`
             }
         ]
