@@ -19,26 +19,29 @@ export const objectCreated: S3Handler = async (event: S3Event | S3CreateEvent) =
         const key = record.s3.object.key;
         const bucket = record.s3.bucket.name;
 
-        const object = await s3.getObject({
-            Bucket: bucket,
-            Key: key
-        }).promise();
-
-        if (resizableContentTypes.includes(object.ContentType)) {
-            const jimp = await Jimp.read(object.Body as Buffer);
-            const buffer = await jimp.resize(width, Jimp.AUTO).getBufferAsync(object.ContentType);
-
-            const originObjectPath = path.parse(key);
-            const copiedObjectKey = `${originObjectPath.dir}/${width}/${originObjectPath.base}`;
-
-            await s3.putObject({
-                Body: buffer,
+        if (!key.includes(`${width}/`)) {
+            const object = await s3.getObject({
                 Bucket: bucket,
-                Key: copiedObjectKey,
-                ACL: 'public-read',
-                ContentType: object.ContentType
+                Key: key
             }).promise();
 
+            if (resizableContentTypes.includes(object.ContentType)) {
+                const jimp = await Jimp.read(object.Body as Buffer);
+                const buffer = await jimp.resize(width, Jimp.AUTO).getBufferAsync(object.ContentType);
+
+                const originObjectPath = path.parse(key);
+                const copiedObjectKey = `${originObjectPath.dir}/${width}/${originObjectPath.base}`;
+
+                await s3.putObject({
+                    Body: buffer,
+                    Bucket: bucket,
+                    Key: copiedObjectKey,
+                    ACL: 'public-read',
+                    ContentType: object.ContentType
+                }).promise();
+
+            }
         }
+
     }
 }
